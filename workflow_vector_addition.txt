@@ -1,0 +1,19 @@
+Work flow in vector addition opencl:
+
+1. Create vectors(pointers) h_a, h_b, h_c on the host and create memory for them in the host using calloc
+2. Initialize h_a, h_b, h_c
+3. Check for available platforms using clGetPlatformIDs() - by getting total number of platforms in numPlatforms
+4. Get the available platforms using clGetPlatformIDs() and store the platform ids in an array Platforms of the type cl_platform_id and size numPlatforms
+5. Get the GPU device using clGetDeviceIDs() and store the device id of the gpu in device_id
+6. Create context for the device_id
+7. Create a command queue for the context
+8. Create the compute program for the context using kernel source buffer
+9. Build the program
+10. Create Kernel
+11. Create memory space for h_a, h_b and h_c in the device and store them respectively in d_a, d_b and d_c which are of data type cl_mem. This is done using clCreateBuffer()
+12. Write a and b vectors into the device at the memory we created using clEnqueueWriteBuffer()
+13. Set the arguments of the kernel one at a time using clSetKernelArg()
+14. Execute the kernel over the entire range of the input dataset and let opencl decide the dimensions of work-gourp and work-items. This is done using clEnqueueNDRangeKernel().
+15. Compete the execution of the kernel
+16. Write the result computed in the gpu that was stored in d_C in the host memory in h_c.
+17. free up the memory 
