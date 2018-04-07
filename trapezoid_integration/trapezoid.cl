@@ -8,14 +8,14 @@ __kernel void pi(
    __local  float*    local_sums,                          
    __global float*    partial_sums)                        
 {                                                          
-   int num_wrk_items  = get_local_size(0);                 
+   int num_work_items  = get_local_size(0);                 
    int local_id       = get_local_id(0);                   
    int group_id       = get_group_id(0);                   
    
    float x, accum = 0.0f;                              
    int i;                                      
    
-   i = (group_id * num_wrk_items + local_id) ;      
+   i = (group_id * num_work_items + local_id) ;      
  
    x = i*step_size;   
    accum += sin(x);  
@@ -41,7 +41,7 @@ void reduce(
    __local  float*    local_sums,                          
    __global float*    partial_sums)                        
 {                                                          
-   int num_wrk_items  = get_local_size(0);                 
+   int num_work_items  = get_local_size(0);                 
    int local_id       = get_local_id(0);                   
    int group_id       = get_group_id(0);                   
    
@@ -51,7 +51,7 @@ void reduce(
    if (local_id == 0) {                      
       sum = 0.0f;                            
    
-      for (i=0; i<num_wrk_items; i++) {        
+      for (i=0; i<num_work_items; i++) {        
           sum += local_sums[i];             
       }                                     
    
